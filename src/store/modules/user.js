@@ -16,10 +16,9 @@ const mutations = {
 }
 const actions = {
   async login(context, data) {
+    // 这里拿到的ret就是相应拦截器成功后返回过来的那个data
     const ret = await login(data)
-    if (ret.data.success) {
-      context.commit('addToken', ret.data.data)
-    }
+    context.commit('addToken', ret)
   }
 }
 export default {

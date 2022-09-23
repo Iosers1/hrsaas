@@ -60,8 +60,8 @@
       >Login</el-button>
 
       <div class="tips">
-        <span style="margin-right:20px;">账号: admin</span>
-        <span> 密码: 111111</span>
+        <span style="margin-right:20px;">账号: 13800000002</span>
+        <span> 密码: 123456</span>
       </div>
     </el-form>
   </div>
@@ -69,7 +69,7 @@
 
 <script>
 import { validMobile } from '@/utils/validate'
-
+import { mapActions } from 'vuex'
 export default {
   name: 'Login',
   data() {
@@ -78,8 +78,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        mobile: 13800000002,
+        password: '123456'
       },
       loginRules: {
         mobile: [
@@ -105,6 +105,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['user/login']),
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -116,21 +117,21 @@ export default {
       })
     },
     handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
-        if (valid) {
-          this.loading = true
-          this.$store
-            .dispatch('user/login', this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || '/' })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
-        } else {
-          console.log('error submit!!')
-          return false
+      this.$refs.loginForm.validate(async isOk => {
+        if (isOk) {
+          try {
+            this.loading = true
+            // 通过校验，调用action
+            await this['user/login'](this.loginForm)
+            // 成功则跳转路由到主页面
+            this.$router.push('/')
+          } catch (error) {
+            // 这里不去提示，是因为再响应拦截器里变已经有失败的提示了
+            console.log(error)
+          } finally {
+            // 不管成功与否，都关闭正在登录的圈圈
+            this.loading = false
+          }
         }
       })
     }
