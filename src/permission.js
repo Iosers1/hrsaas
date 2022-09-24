@@ -6,7 +6,7 @@ import 'nprogress/nprogress.css' // 引入进度条样式
 // 白名单
 const whitelist = ['/login', '/404']
 // 路由前置守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   // 进来就开启进度条
   NProgress.start()
   // 判断是否有token
@@ -16,6 +16,12 @@ router.beforeEach((to, from, next) => {
       // 如果是，则无需去登录，直接跳到主页
       next('/') // 跳到主页
     } else {
+      // 当有token，并且跳转的不是登陆页面的时候，就需要获取用户资料，但是也只获取一次就可以
+      if (!store.state.user.userinfo.userId) {
+        console.log(store.state.user)
+        // 取反就是说明还没有获取用户资料
+        await store.dispatch('user/getUserInfo')
+      }
       next() // 放行
     }
   } else {

@@ -3,7 +3,7 @@ import { login, getUserInfo } from '@/api/user'
 
 const state = {
   token: getToken(), // 初始化vuex时候就从本地获取token
-  userInfo: {} // 这里要设置为空对象是因为在快捷访问时候是对象.属性的方式去建立的，如果设置为null,则会报错
+  userinfo: {} // 这里要设置为空对象是因为在快捷访问时候是对象.属性的方式去建立的，如果设置为null,则会报错
 }
 const mutations = {
   // 添加token
