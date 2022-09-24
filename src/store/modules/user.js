@@ -1,5 +1,5 @@
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import { login, getUserInfo } from '@/api/user'
+import { login, getUserInfo, getUserDetailById } from '@/api/user'
 
 const state = {
   token: getToken(), // 初始化vuex时候就从本地获取token
@@ -37,7 +37,9 @@ const actions = {
   async getUserInfo(context) {
     // 这里拿到的ret就是相应拦截器成功后返回过来的那个data
     const ret = await getUserInfo()
-    context.commit('setUserInfo', ret)
+    const baseInfo = await getUserDetailById(ret.userId)
+    // { ...ret, ...baseInfo }合并两个结果
+    context.commit('setUserInfo', { ...ret, ...baseInfo })
     return ret
   }
 }
