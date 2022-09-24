@@ -1,11 +1,13 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
+import router from '@/router'
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // 请求服务器的基地址
   timeout: 4000 // 超时时间
 })
+
 // 请求拦截器，接收两个参数，一个是请求的配置，一个是错误函数
 service.interceptors.request.use(config => {
   // 先判断时候有token
@@ -17,6 +19,7 @@ service.interceptors.request.use(config => {
 }, error => {
   return Promise.reject(error)
 })
+
 // 响应拦截器
 service.interceptors.response.use(response => {
 // 解构数据
@@ -30,6 +33,13 @@ service.interceptors.response.use(response => {
     return Promise.reject(new Error(message))
   }
 }, error => {
+  // token过期的被动处理
+  if (error.response && error.response.data && error.response.data.code === 10002) {
+    // 退出登录
+    store.dispatch('user/logout')
+    // 跳转到登录页面
+    router.push('/login')
+  }
   Message.error(error.message)
   return Promise.reject(error)
 })
