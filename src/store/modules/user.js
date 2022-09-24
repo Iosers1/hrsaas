@@ -22,7 +22,7 @@ const mutations = {
     state.userinfo = userinfo
   },
   // 移除用户信息
-  reomveUserInfo(state) {
+  removeUserInfo(state) {
     state.userinfo = {}
   }
 }
@@ -41,6 +41,13 @@ const actions = {
     // { ...ret, ...baseInfo }合并两个结果
     context.commit('setUserInfo', { ...ret, ...baseInfo })
     return ret
+  },
+  // 退出登录的action
+  logout(context) {
+    // 清除token
+    context.commit('removeToken')
+    // 清除用户信息
+    context.commit('removeUserInfo')
   }
 }
 
