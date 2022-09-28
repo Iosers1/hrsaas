@@ -12,6 +12,8 @@
 </template>
 <script>
 import treeTools from './components/tree-tools.vue'
+import { getDepartments } from '@/api/departments'
+import { tranListToTreeData } from '@/utils'
 export default {
   components: { treeTools },
   data() {
@@ -20,12 +22,18 @@ export default {
         label: 'name' // label默认的值是:'label'
         // children: 'children' //这个可以省略，children默认的就是'children'
       },
-      departs: [
-        { name: '总裁办', manager: '曹操', children: [{ name: '董事会', manager: '曹丕' }] },
-        { name: '行政部', manager: '刘备' },
-        { name: '人事部', manager: '孙权' }
-      ],
-      company: { name: '江苏传智播客教育科技股份有限公司', manager: '负责人' }
+      departs: [],
+      company: { name: '人力资源后台管理系统', manager: '负责人' }
+    }
+  },
+  created() {
+    this.getDepartments()
+  },
+  methods: {
+    async getDepartments() {
+      const ret = await getDepartments()
+      console.log(ret.depts)
+      this.departs = tranListToTreeData(ret.depts, '')
     }
   }
 }
