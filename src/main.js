@@ -15,12 +15,16 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 import PageTools from '@/components'
+import * as filter from '@/utils/filters'
 import * as directives from '@/directives'
 Object.keys(directives).forEach(item => {
   Vue.directive(item, directives[item])
   // console.log(directives[item])
 })
 
+Object.keys(filter).forEach(item => {
+  Vue.filter(item, filter[item])
+})
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
