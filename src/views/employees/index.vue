@@ -25,13 +25,13 @@
           </el-table-column>
           <el-table-column label="账户状态" sortable prop="enableState" />
           <el-table-column label="操作" sortable fixed="right" width="280">
-            <template>
+            <template slot-scope="{row}">
               <el-button type="text" size="small">查看</el-button>
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
               <el-button type="text" size="small">角色</el-button>
-              <el-button type="text" size="small">删除</el-button>
+              <el-button type="text" size="small" @click="deleteEmployee(row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { getEmployeeList } from '@/api/employees'
+import { getEmployeeList, delEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
 
 console.log(EmployeeEnum)
@@ -87,6 +87,18 @@ export default {
       // console.log(cellValue)
       const obj = EmployeeEnum.hireType.find((item) => +item.id === +cellValue)
       return obj ? obj.value : '未知'
+    },
+    async deleteEmployee(id) {
+      // await delEmployee(id)
+      // 弹出提示框
+      try {
+        await this.$confirm('确定删除???')
+        await delEmployee(id)
+        this.getEmployeeList()
+        this.$message.success('删除成功')
+      } catch (error) {
+        // console.log(error)
+      }
     }
   }
 
