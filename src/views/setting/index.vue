@@ -4,44 +4,48 @@
       <el-card>
         <el-tabs>
           <el-tab-pane label="角色管理" name="first">
-            <el-row style="height:60px">
-              <el-button type="primary" icon="el-icon-plus" size="small" @click="showDialog = true">新增角色</el-button>
+            <el-row style="height: 60px">
+              <el-button
+                type="primary"
+                icon="el-icon-plus"
+                size="small"
+                @click="showDialog = true"
+              >新增角色</el-button>
             </el-row>
-            <el-table
-              style="width: 100%"
-              border
-              :data="list"
-            >
+            <el-table style="width: 100%" border :data="list">
               <el-table-column
                 prop="date"
                 label="序号"
                 width="120"
                 type="index"
               />
-              <el-table-column
-                prop="name"
-                label="角色名称"
-                width="240"
-              />
-              <el-table-column
-                prop="description"
-                label="描述"
-              />
-              <el-table-column
-                prop="address"
-                label="操作"
-              >
+              <el-table-column prop="name" label="角色名称" width="240" />
+              <el-table-column prop="description" label="描述" />
+              <el-table-column prop="address" label="操作">
                 <!-- 作用域插槽 -->
                 <template slot-scope="{ row }">
                   <!-- {{ row }} -->
                   <el-button size="small" type="success">分配权限</el-button>
-                  <el-button size="small" type="primary" @click="editRole(row.id)">编辑</el-button>
-                  <el-button size="small" type="danger" @click="deleteRole(row.id)">删除</el-button>
+                  <el-button
+                    size="small"
+                    type="primary"
+                    @click="editRole(row.id)"
+                  >编辑</el-button>
+                  <el-button
+                    size="small"
+                    type="danger"
+                    @click="deleteRole(row.id)"
+                  >删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
             <!-- 分页组件 -->
-            <el-row type="flex" justify="center" align="middle" style="height: 60px">
+            <el-row
+              type="flex"
+              justify="center"
+              align="middle"
+              style="height: 60px"
+            >
               <el-pagination
                 :current-page="page.page"
                 :page-size="page.pagesize"
@@ -60,25 +64,48 @@
               :closable="false"
               :show-icon="true"
             />
-            <el-form label-width="120px" style="margin-top:50px">
+            <el-form label-width="120px" style="margin-top: 50px">
               <el-form-item label="公司名称">
-                <el-input v-model="formData.name" disabled style="width:400px" />
+                <el-input
+                  v-model="formData.name"
+                  disabled
+                  style="width: 400px"
+                />
               </el-form-item>
               <el-form-item label="公司地址">
-                <el-input v-model="formData.companyAddress" disabled style="width:400px" />
+                <el-input
+                  v-model="formData.companyAddress"
+                  disabled
+                  style="width: 400px"
+                />
               </el-form-item>
               <el-form-item label="邮箱">
-                <el-input v-model="formData.mailbox" disabled style="width:400px" />
+                <el-input
+                  v-model="formData.mailbox"
+                  disabled
+                  style="width: 400px"
+                />
               </el-form-item>
               <el-form-item label="备注">
-                <el-input v-model="formData.remarks" type="textarea" :rows="3" disabled style="width:400px" />
+                <el-input
+                  v-model="formData.remarks"
+                  type="textarea"
+                  :rows="3"
+                  disabled
+                  style="width: 400px"
+                />
               </el-form-item>
             </el-form>
           </el-tab-pane>
         </el-tabs>
       </el-card>
       <el-dialog title="编辑弹层" :visible="showDialog" @close="btnCancel">
-        <el-form ref="roleForm" :model="roleForm" :rules="rules" label-width="120px">
+        <el-form
+          ref="roleForm"
+          :model="roleForm"
+          :rules="rules"
+          label-width="120px"
+        >
           <el-form-item label="角色名称" prop="name">
             <el-input v-model="roleForm.name" />
           </el-form-item>
@@ -90,7 +117,11 @@
         <el-row slot="footer" type="flex" justify="center">
           <el-col :span="6">
             <el-button size="small" @click="btnCancel">取消</el-button>
-            <el-button size="small" type="primary" @click="btnOK">确定</el-button>
+            <el-button
+              size="small"
+              type="primary"
+              @click="btnOK"
+            >确定</el-button>
           </el-col>
         </el-row>
       </el-dialog>
@@ -99,7 +130,14 @@
 </template>
 
 <script>
-import { getRoleList, getCompanyInfo, deleteRole, updateRole, getRoleDetail, addRole } from '@/api/setting'
+import {
+  getRoleList,
+  getCompanyInfo,
+  deleteRole,
+  updateRole,
+  getRoleDetail,
+  addRole
+} from '@/api/setting'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -116,7 +154,9 @@ export default {
       showDialog: false,
       roleForm: {},
       rules: {
-        name: [{ required: true, message: '角色名称不能为空', trigger: 'blur' }]
+        name: [
+          { required: true, message: '角色名称不能为空', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -188,10 +228,8 @@ export default {
       this.showDialog = false
     }
   }
-
 }
 </script>
 
-  <style>
-
-  </style>
+<style>
+</style>
