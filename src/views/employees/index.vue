@@ -15,13 +15,13 @@
           <!-- element的表格提供了很多现成的列，比如索引列，type="index" -->
           <el-table-column label="序号" sortable="" type="index" />
           <!-- prop指定当前列，显示的哪个属性的数据（username来自于list遍历的每个对象中） -->
-          <el-table-column label="姓名" sortable="" prop="username" />
-          <el-table-column label="工号" sortable="" prop="workNumber" />
-          <el-table-column label="聘用形式" sortable="" prop="formOfEmployment" />
-          <el-table-column label="部门" sortable="" prop="departmentName" />
-          <el-table-column label="入职时间" sortable="" prop="timeOfEntry" />
-          <el-table-column label="账户状态" sortable="" prop="enableState" />
-          <el-table-column label="操作" sortable="" fixed="right" width="280">
+          <el-table-column label="姓名" sortable prop="username" />
+          <el-table-column label="工号" sortable prop="workNumber" />
+          <el-table-column label="聘用形式" sortable prop="formOfEmployment" :formatter="formatEmployment" />
+          <el-table-column label="部门" sortable prop="departmentName" />
+          <el-table-column label="入职时间" sortable prop="timeOfEntry" />
+          <el-table-column label="账户状态" sortable prop="enableState" />
+          <el-table-column label="操作" sortable fixed="right" width="280">
             <template>
               <el-button type="text" size="small">查看</el-button>
               <el-button type="text" size="small">转正</el-button>
@@ -49,15 +49,18 @@
 
 <script>
 import { getEmployeeList } from '@/api/employees'
+import EmployeeEnum from '@/api/constant/employees'
+
+console.log(EmployeeEnum)
 export default {
   data() {
     return {
       loading: false,
-      list: [], // 接数据的
+      list: [],
       page: {
-        page: 1, // 当前页码
+        page: 1,
         size: 10,
-        total: 0 // 总数
+        total: 0
       }
 
     }
@@ -76,6 +79,11 @@ export default {
       this.page.total = total
       this.list = rows
       this.loading = false
+    },
+    formatEmployment(row, column, cellValue, index) {
+      // console.log(cellValue)
+      const obj = EmployeeEnum.hireType.find((item) => +item.id === +cellValue)
+      return obj ? obj.value : '未知'
     }
   }
 
